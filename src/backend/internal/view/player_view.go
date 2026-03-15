@@ -85,21 +85,22 @@ type GameEventView struct {
 
 // PlayerView is the complete game state from one player's perspective.
 type PlayerView struct {
-	Phase         string            `json:"phase"`
-	Round         int               `json:"round"`
-	Turn          int               `json:"turn"`
-	ActiveSeat    int               `json:"activeSeat"`
-	MySeat        int               `json:"mySeat"`
-	ScoringMode   int               `json:"scoringMode"`
-	MyHand        []CardInfo        `json:"myHand"`
-	Players       []PlayerInfo      `json:"players"`
-	Board         [][]SlotView      `json:"board"`
-	DeckRemaining int               `json:"deckRemaining"`
-	PendingAction *ActionView       `json:"pendingAction,omitempty"`
-	RevealedCard  *CardInfo         `json:"revealedCard,omitempty"`
-	Events        []GameEventView   `json:"events,omitempty"`
-	Scores        []PlayerScoreView `json:"scores,omitempty"`
-	Winners       []string          `json:"winners,omitempty"`
+	Phase            string            `json:"phase"`
+	Round            int               `json:"round"`
+	Turn             int               `json:"turn"`
+	ActiveSeat       int               `json:"activeSeat"`
+	MySeat           int               `json:"mySeat"`
+	ScoringMode      int               `json:"scoringMode"`
+	MyHand           []CardInfo        `json:"myHand"`
+	Players          []PlayerInfo      `json:"players"`
+	Board            [][]SlotView      `json:"board"`
+	DeckRemaining    int               `json:"deckRemaining"`
+	PendingAction    *ActionView       `json:"pendingAction,omitempty"`
+	RevealedCard     *CardInfo         `json:"revealedCard,omitempty"`
+	LastRevealedCard *CardInfo         `json:"lastRevealedCard,omitempty"`
+	Events           []GameEventView   `json:"events,omitempty"`
+	Scores           []PlayerScoreView `json:"scores,omitempty"`
+	Winners          []string          `json:"winners,omitempty"`
 }
 
 // GeneratePlayerView creates a PlayerView for a specific player.
@@ -182,6 +183,12 @@ func GeneratePlayerView(engine *core.Engine, playerID string, nicknames map[stri
 			info := cardToInfo(*gs.RevealedCard)
 			pv.RevealedCard = &info
 		}
+	}
+
+	// Last revealed card for sidebar (persists between turns)
+	if gs.LastRevealedCard != nil {
+		info := cardToInfo(*gs.LastRevealedCard)
+		pv.LastRevealedCard = &info
 	}
 
 	// Pending action (only if it's this player's action)

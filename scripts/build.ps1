@@ -31,8 +31,9 @@ function Build-Backend {
         if (-not (Test-Path $outDir)) {
             New-Item -ItemType Directory -Path $outDir | Out-Null
         }
-        go build -o "$outDir\server.exe" ./cmd/server/
-        Write-Host "Binary: $outDir\server.exe"
+        $V = (Get-Content "$Root\VERSION" -Raw).Trim()
+        go build -ldflags "-X main.Version=$V" -o "$outDir\server.exe" ./cmd/server/
+        Write-Host "Binary: $outDir\server.exe (version $V)"
 
         # Copy frontend build next to server binary as "public/"
         $frontendDist = "$Root\dist\frontend"

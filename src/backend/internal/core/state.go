@@ -168,21 +168,22 @@ func IntPtr(v int) *int { return &v }
 
 // GameState holds the authoritative state of a game.
 type GameState struct {
-	Config          GameConfig
-	Phase           GamePhase
-	TurnStep        TurnStep
-	Round           int // 0-based current round
-	TurnInRound     int // 0-based current turn within round
-	StartingSeat    int // seat index of starting player for current round
-	ActiveSeat      int // seat index of current active player
-	Players         []*PlayerState
-	Deck            *Deck
-	Board           *Board
-	RemovedPile     []Card
-	PendingAction   *PendingAction
-	RevealedCard    *Card       // Currently revealed card (for display)
-	RecursiveReveal bool        // True when processing recursive reveal (card 4)
-	EventLog        []GameEvent // Recent events visible to all players
+	Config           GameConfig
+	Phase            GamePhase
+	TurnStep         TurnStep
+	Round            int // 0-based current round
+	TurnInRound      int // 0-based current turn within round
+	StartingSeat     int // seat index of starting player for current round
+	ActiveSeat       int // seat index of current active player
+	Players          []*PlayerState
+	Deck             *Deck
+	Board            *Board
+	RemovedPile      []Card
+	PendingAction    *PendingAction
+	RevealedCard     *Card       // Currently revealed card (active reveal flow)
+	LastRevealedCard *Card       // Last card that was revealed (persists for sidebar display)
+	RecursiveReveal  bool        // True when processing recursive reveal (card 4)
+	EventLog         []GameEvent // Recent events visible to all players
 }
 
 func NewGameState(config GameConfig) *GameState {

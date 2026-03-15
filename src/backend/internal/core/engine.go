@@ -276,6 +276,10 @@ func (e *Engine) handleSwapWithDrawn(choice PlayerChoice) error {
 func (e *Engine) showAndConfirmReveal() error {
 	gs := e.State
 
+	// Persist the revealed card for sidebar display (stays until next reveal)
+	lastCopy := *gs.RevealedCard
+	gs.LastRevealedCard = &lastCopy
+
 	eventCopy := *gs.RevealedCard
 	gs.AddEvent(GameEvent{
 		Type:        "cardRevealed",

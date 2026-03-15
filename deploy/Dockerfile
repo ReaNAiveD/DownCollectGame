@@ -9,10 +9,12 @@ RUN node node_modules/vite/bin/vite.js build
 # Stage 2: Build Go server
 FROM golang:1.25-alpine AS backend-builder
 WORKDIR /app/src/backend
+COPY VERSION /app/VERSION
 COPY src/backend/go.mod src/backend/go.sum ./
 RUN go mod download
 COPY src/backend/ ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o dist/server ./cmd/server/
+RUN VERSION=$(cat /app/VERSION | tr -d '\n') && \
+    CGO_ENABLED=0 GOOS=linux go build -ldflags "-X main.Version=$VERSION" -o dist/server ./cmd/server/
 
 # Stage 3: Final image
 FROM alpine:3.19

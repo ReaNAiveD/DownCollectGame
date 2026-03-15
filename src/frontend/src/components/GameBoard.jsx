@@ -459,7 +459,7 @@ export default function GameBoard({ gameState, sendAction }) {
       )}
     </div>
     {/* Right Sidebar */}
-    <CardSidebar revealedCard={gs.revealedCard} hoveredCard={hoveredCard} scoringMode={gs.scoringMode || 0} />
+    <CardSidebar revealedCard={gs.lastRevealedCard || gs.revealedCard} hoveredCard={hoveredCard} scoringMode={gs.scoringMode || 0} />
     </div>
   );
 }

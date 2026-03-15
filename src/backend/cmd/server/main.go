@@ -79,7 +79,11 @@ func generateRoomCode() string {
 	return string(b)
 }
 
+// Version is set at build time via -ldflags.
+var Version = "dev"
+
 func main() {
+	log.Printf("DownCollect server version %s", Version)
 	server := &Server{rooms: make(map[string]*Room)}
 
 	// Determine frontend path: check env, then ./public next to binary, then fallback
@@ -104,7 +108,7 @@ func main() {
 	// API endpoints
 	mux.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"status":"ok"}`))
+		w.Write([]byte(fmt.Sprintf(`{"status":"ok","version":"%s"}`, Version)))
 	})
 
 	// Serve frontend static files
