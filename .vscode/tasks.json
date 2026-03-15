@@ -1,0 +1,99 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Frontend: Install",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/src/frontend" },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Build",
+      "type": "shell",
+      "command": "npx vite build",
+      "options": {
+        "cwd": "${workspaceFolder}/src/frontend"
+      },
+      "group": "build",
+      "dependsOn": "Frontend: Install",
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Dev Server",
+      "type": "shell",
+      "command": "npx vite",
+      "options": { "cwd": "${workspaceFolder}/src/frontend" },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in|Local:"
+        }
+      }
+    },
+    {
+      "label": "Backend: Build",
+      "type": "shell",
+      "command": "go build ./cmd/server/",
+      "options": { "cwd": "${workspaceFolder}/src/backend" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Backend: Run",
+      "type": "shell",
+      "command": "go run ./cmd/server/",
+      "options": {
+        "cwd": "${workspaceFolder}/src/backend",
+        "env": { "FRONTEND_DIR": "${workspaceFolder}/src/frontend/dist" }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "DownCollect server starting",
+          "endsPattern": "^$"
+        }
+      }
+    },
+    {
+      "label": "Backend: Test",
+      "type": "shell",
+      "command": "go test ./internal/... -v -count=1 -timeout 30s",
+      "options": { "cwd": "${workspaceFolder}/src/backend" },
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Build All",
+      "dependsOn": ["Frontend: Build", "Backend: Build"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run (with frontend)",
+      "dependsOn": ["Frontend: Build", "Backend: Run"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Full Stack",
+      "dependsOn": ["Backend: Run", "Frontend: Dev Server"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "if (Test-Path dist) { Remove-Item -Recurse -Force dist }; if (Test-Path src/frontend/dist) { Remove-Item -Recurse -Force src/frontend/dist }; if (Test-Path src/backend/dist) { Remove-Item -Recurse -Force src/backend/dist }; Write-Output 'Cleaned'",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

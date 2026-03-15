@@ -1,0 +1,286 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a1a2e;
+  color: #eee;
+  min-height: 100vh;
+}
+
+.app { max-width: 1200px; margin: 0 auto; padding: 12px; }
+h1, h2, h3 { margin-bottom: 8px; }
+
+/* ─── Lobby ─── */
+.lobby { display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 60px; }
+.lobby h1 { font-size: 2.5rem; color: #e94560; }
+.lobby input {
+  padding: 10px 16px; font-size: 1rem; border: 2px solid #444; border-radius: 8px;
+  background: #16213e; color: #eee; width: 260px; text-align: center;
+}
+.lobby button {
+  padding: 10px 24px; font-size: 1rem; border: none; border-radius: 8px;
+  cursor: pointer; background: #0f3460; color: #eee; transition: background 0.2s;
+}
+.lobby button:hover { background: #e94560; }
+.lobby .join-section { display: flex; gap: 8px; }
+.btn-config-toggle {
+  padding: 10px 16px; font-size: 0.9rem; border: none; border-radius: 8px;
+  cursor: pointer; background: #1e3a5f; color: #aaa;
+}
+.btn-config-toggle:hover { background: #2a4a6f; color: #eee; }
+.create-config {
+  background: #16213e; border: 1px solid #333; border-radius: 8px;
+  padding: 12px 16px; width: 280px; display: flex; flex-direction: column; gap: 8px;
+}
+.config-row { display: flex; justify-content: space-between; align-items: center; }
+.config-row label { font-size: 0.9rem; color: #aaa; }
+.config-row select {
+  padding: 4px 8px; border-radius: 4px; border: 1px solid #444;
+  background: #0f3460; color: #eee; font-size: 0.9rem;
+}
+
+/* ─── Waiting Room ─── */
+.waiting-room { text-align: center; padding-top: 40px; }
+.waiting-room .room-code { font-size: 2rem; font-weight: bold; color: #e94560; letter-spacing: 6px; margin: 12px 0; }
+.waiting-room .players-list { list-style: none; margin: 16px 0; }
+.waiting-room .players-list li { padding: 6px 0; font-size: 1.1rem; }
+.waiting-room button {
+  padding: 12px 32px; font-size: 1.1rem; border: none; border-radius: 8px;
+  cursor: pointer; background: #e94560; color: #fff; margin-top: 12px;
+}
+.waiting-room button:disabled { background: #444; cursor: not-allowed; }
+.room-config {
+  display: inline-block; text-align: left; margin: 12px auto;
+  background: #16213e; padding: 10px 16px; border-radius: 8px; border: 1px solid #333;
+}
+.config-grid {
+  display: grid; grid-template-columns: auto auto; gap: 4px 16px; font-size: 0.9rem;
+}
+.config-label { color: #888; }
+.config-value { color: #4ecdc4; font-weight: 600; }
+
+/* ─── Game Layout ─── */
+.game-layout {
+  display: grid; grid-template-columns: 1fr 240px; gap: 12px;
+  min-height: calc(100vh - 24px);
+}
+@media (max-width: 800px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .card-sidebar { display: none; }
+}
+.game { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+/* ─── Card Sidebar ─── */
+.card-sidebar {
+  display: flex; flex-direction: column; gap: 10px;
+  position: sticky; top: 12px; align-self: start;
+}
+.info-panel {
+  background: #16213e; border: 1px solid #333; border-radius: 8px;
+  padding: 10px; font-size: 0.85rem;
+}
+.info-panel.empty { opacity: 0.5; }
+.info-empty { color: #555; text-align: center; padding: 12px 0; }
+.info-panel-header {
+  font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 8px; border-bottom: 1px solid #333; padding-bottom: 4px;
+}
+.info-card-display { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.info-card-meta { display: flex; flex-direction: column; gap: 2px; }
+.info-card-name { font-weight: 600; color: #eee; font-size: 0.95rem; }
+.info-card-base { font-size: 0.8rem; color: #888; }
+.info-section { margin-bottom: 6px; }
+.info-section-title { font-size: 0.8rem; color: #4ecdc4; font-weight: 600; margin-bottom: 2px; }
+.info-text { color: #ccc; line-height: 1.4; }
+.info-mode-tag {
+  font-size: 0.65rem; background: #333; color: #f9d71c; padding: 1px 5px;
+  border-radius: 3px; margin-left: 6px; vertical-align: middle;
+}
+
+.game-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid #333;
+}
+.phase-info { font-size: 1rem; color: #e94560; font-weight: 600; }
+.deck-info { font-size: 0.85rem; color: #888; }
+.section-title { color: #888; font-size: 0.9rem; margin-bottom: 6px; }
+.empty-text { color: #555; text-align: center; padding: 16px; }
+
+/* ─── Player Rows ─── */
+.player-rows { display: flex; flex-direction: column; gap: 4px; }
+.player-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 5px 10px; border-radius: 6px; background: #16213e; transition: background 0.2s;
+}
+.player-row.active { background: #1e3a5f; border-left: 3px solid #e94560; }
+.player-info-cell { min-width: 100px; display: flex; align-items: center; gap: 6px; }
+.player-name { font-size: 0.9rem; font-weight: 600; }
+.player-you { color: #4ecdc4; font-size: 0.8rem; }
+.player-turn-indicator { color: #e94560; font-size: 0.7rem; }
+.player-hand-indicator { display: flex; gap: 3px; }
+.mini-card {
+  width: 24px; height: 34px; border-radius: 3px; background: #0f3460; border: 1px solid #334;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; color: #556;
+}
+.no-cards { font-size: 0.75rem; color: #555; }
+
+/* ─── Visual Event Panel ─── */
+.event-panel {
+  background: rgba(15, 52, 96, 0.9); border-left: 3px solid #f9d71c;
+  padding: 8px 12px; border-radius: 6px; animation: eventSlideIn 0.3s ease-out;
+}
+.event-block { margin-bottom: 6px; }
+.event-block:last-child { margin-bottom: 0; }
+.event-header { font-size: 0.9rem; margin-bottom: 4px; }
+.event-player { color: #4ecdc4; font-weight: 600; margin-right: 4px; }
+.event-desc { color: #ccc; }
+.event-label { color: #aaa; font-size: 0.8rem; margin-right: 6px; white-space: nowrap; }
+.event-cards-row {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 4px 0;
+}
+.event-cards-display {
+  display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0; padding: 4px;
+  background: rgba(0,0,0,0.2); border-radius: 4px;
+}
+.event-card-slot { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.event-card-slot .slot-pos { font-size: 0.65rem; color: #888; }
+.event-visual { margin: 4px 0; }
+.event-note { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 2px; }
+.slot-tag {
+  background: rgba(233,69,96,0.2); border: 1px solid rgba(233,69,96,0.4);
+  color: #e94560; font-size: 0.75rem; padding: 1px 6px; border-radius: 3px;
+}
+.event-slot-group { display: flex; gap: 4px; }
+
+/* Slot highlighting on board */
+.card-wrapper { position: relative; }
+.card-wrapper.highlighted::after {
+  content: ''; position: absolute; inset: -3px; border: 2px solid #f9d71c;
+  border-radius: 7px; animation: highlightPulse 1s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes highlightPulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(249,215,28,0.4); }
+  50% { box-shadow: 0 0 12px rgba(249,215,28,0.8); }
+}
+
+@keyframes eventSlideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Revealed Card Overlay ─── */
+.revealed-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 20;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.2s;
+}
+.revealed-inner { text-align: center; animation: revealPop 0.3s ease-out; max-width: 400px; }
+.revealed-label { color: #e94560; margin-bottom: 10px; font-size: 1.1rem; font-weight: 600; }
+.swap-hand-row {
+  display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+  margin-top: 10px; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 6px;
+}
+.btn-confirm {
+  margin-top: 14px; padding: 8px 28px; border: none; border-radius: 6px;
+  font-size: 1rem; cursor: pointer; background: #e94560; color: #fff;
+}
+.btn-confirm:hover { background: #c0392b; }
+
+@keyframes revealPop {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Board ─── */
+.board-area { flex: 1; overflow-y: auto; }
+.board-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; padding: 2px 4px; border-radius: 4px; }
+.board-row-label { width: 50px; font-size: 0.8rem; color: #666; flex-shrink: 0; }
+.card-slots { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.row-clickable { cursor: pointer; background: rgba(233,69,96,0.08); }
+.row-clickable:hover { background: rgba(233,69,96,0.18); }
+.insert-hint { color: #666; font-size: 0.8rem; }
+
+/* ─── Cards ─── */
+.card {
+  width: 52px; height: 74px; border-radius: 5px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold;
+  border: 2px solid #444; transition: all 0.15s; user-select: none; flex-shrink: 0;
+}
+.card-sm { width: 40px; height: 56px; font-size: 0.7rem; }
+.card.face-down { background: linear-gradient(135deg, #0f3460, #16213e); color: #555; }
+.card.face-up { background: #fefefe; color: #333; }
+.card.face-up.red { color: #e94560; }
+.card.face-up.black { color: #222; }
+.card.empty-slot { opacity: 0.15; }
+.card.selectable { cursor: pointer; border-color: #e94560; box-shadow: 0 0 6px rgba(233,69,96,0.4); }
+.card.selectable:hover { transform: scale(1.1); box-shadow: 0 0 10px rgba(233,69,96,0.7); }
+.card.selected { border-color: #4ecdc4; box-shadow: 0 0 10px rgba(78,205,196,0.7); transform: scale(1.06); }
+.card.peeked { border-color: #f9d71c; border-style: dashed; }
+.card .rank { font-size: inherit; }
+.card .suit { font-size: 0.7em; }
+
+/* ─── Insert Marker ─── */
+.insert-marker {
+  width: 22px; height: 74px; border: 2px dashed #e94560; border-radius: 4px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: #e94560; font-size: 0.8rem; transition: all 0.15s; flex-shrink: 0;
+}
+.insert-marker:hover { background: rgba(233,69,96,0.2); transform: scale(1.1); }
+
+/* ─── Hand ─── */
+/* ─── My Area (self player) ─── */
+.my-area {
+  border-top: 2px solid #333; padding: 10px 8px; background: #16213e; border-radius: 6px;
+}
+.my-area.my-turn { border-top-color: #e94560; background: #1e2a4a; }
+.my-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+}
+.my-name { font-size: 1rem; font-weight: 600; color: #4ecdc4; }
+.my-hand-count { font-size: 0.85rem; color: #888; }
+.hand-cards { display: flex; gap: 6px; flex-wrap: wrap; }
+.hand-cards .card { width: 60px; height: 84px; font-size: 0.95rem; }
+
+/* ─── Action Panel ─── */
+.action-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #16213e; border-top: 2px solid #e94560;
+  padding: 10px 16px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  z-index: 10;
+}
+.action-label { font-size: 0.95rem; }
+.select-count { color: #888; font-size: 0.85rem; }
+.btn-action {
+  padding: 7px 20px; border: none; border-radius: 6px; font-size: 0.95rem;
+  cursor: pointer; background: #e94560; color: #fff;
+}
+.btn-action:hover { background: #c0392b; }
+.btn-action:disabled { background: #444; cursor: not-allowed; }
+.btn-secondary {
+  padding: 7px 20px; border: none; border-radius: 6px; font-size: 0.95rem;
+  cursor: pointer; background: #0f3460; color: #eee;
+}
+.btn-secondary:hover { background: #1e3a5f; }
+
+/* ─── Results ─── */
+.results { padding-top: 24px; text-align: center; }
+.results h2 { color: #e94560; font-size: 2rem; margin-bottom: 16px; }
+.results .winner { font-size: 1.3rem; color: #4ecdc4; margin-bottom: 24px; }
+.results .player-result { margin-bottom: 20px; background: #16213e; padding: 16px; border-radius: 8px; text-align: left; }
+.results .player-result h3 { display: flex; justify-content: space-between; }
+.results .score-details { margin-top: 8px; }
+.results .score-detail { display: flex; justify-content: space-between; padding: 3px 0; font-size: 0.9rem; color: #aaa; }
+.results .score-detail .score-value { color: #eee; font-weight: bold; }
+
+/* ─── Error Toast ─── */
+.error-toast {
+  position: fixed; top: 16px; right: 16px; background: #e94560; color: #fff;
+  padding: 12px 20px; border-radius: 8px; z-index: 100; animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
